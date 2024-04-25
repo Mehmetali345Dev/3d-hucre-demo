@@ -4,6 +4,8 @@ import { Drawer } from 'vaul';
 import { ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 import classname from 'classnames';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 export default function Info({ title, description, image, src }: { title: String, description: String, image: String, src: String }) {
 
   const { isTablet, isDesktop } = useMediaQuery();
@@ -14,16 +16,20 @@ export default function Info({ title, description, image, src }: { title: String
         `top-0 left-0 flex flex-col h-full absolute z-20 bg-transparent justify-end w-11/12 md:w-1/4`
       )}
     >
-      <div
-        className="p-4 m-4 scrollbar-thin overflow-y-auto gap-2 flex flex-col h-full rounded-md bg-transparent backdrop-blur-xl bg-sienna-400 bg-opacity-50 backdrop-filter"
-      >
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <img alt={title} src={image} className='w-full' />
-        <span className='text-sm text-sienna-900'>{src}</span>
-        <p>
-          {description}
-        </p>
-      </div>
+      <AnimatePresence>
+        <div
+          className="p-4 m-4 scrollbar-thin overflow-y-auto gap-2 flex flex-col h-full rounded-md backdrop-blur-xl bg-sienna-400 bg-opacity-50 backdrop-filter"
+        >
+          <h1 className="text-2xl font-bold">{title}</h1>
+          <motion.img  initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }} key={title} alt={title} src={image} className='w-full' />
+          <span className='text-sm text-sienna-900'>{src}</span>
+          <p>
+            {description}
+          </p>
+        </div>
+      </AnimatePresence>
     </div> :
       <Drawer.Root should-scale-background>
         <Drawer.Trigger className="fixed flex gap-2 items-center justify-center bottom-0 left-0 bg-sienna-400 text-white text-xl z-20 w-screen px-2 py-2">
